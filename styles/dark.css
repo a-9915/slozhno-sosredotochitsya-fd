@@ -1,0 +1,15 @@
+:root.theme-dark {
+  --bg-color: #000028;
+  --text-color: #f1b2ce;
+  --title-color: #db00ff;
+  --accent-color: #ff0070;
+  --accent-color-transparent: rgba(255, 0, 112, 0.4);
+  --decor-color: #ff0070;
+  --text-shadow-color: #ff0070;
+  --bg-image: url('../images/cover-image-dark.png');
+}
+
+/* Показываем REC в тёмной теме */
+.theme-dark .header__rec {
+  display: block;
+}
