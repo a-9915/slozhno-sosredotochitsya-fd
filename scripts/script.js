@@ -1,44 +1,53 @@
 
-(function () {
-  const themeButtons = document.querySelectorAll('.header__theme-menu-button');
-  const htmlElement = document.documentElement;
-
-  function setTheme(theme) {
-    // Удаляем все классы тем
-    htmlElement.classList.remove('theme-light', 'theme-dark');
-    
-    // Добавляем нужный класс
-    if (theme !== 'auto') {
-      htmlElement.classList.add(`theme-${theme}`);
-    }
-    
-    // Обновляем активную кнопку
-    themeButtons.forEach(button => {
-      button.classList.remove('header__theme-menu-button_active');
-      button.disabled = false;
-      
-      const buttonType = button.classList.contains('header__theme-menu-button_type_light') ? 'light' :
-                         button.classList.contains('header__theme-menu-button_type_dark') ? 'dark' : 'auto';
-      
-      if (buttonType === theme) {
-        button.classList.add('header__theme-menu-button_active');
-        button.disabled = true;
-      }
-    });
+(function initTheme() {
+  const theme = localStorage.getItem('theme');
+  if (theme) {
+    setTheme(theme);
   }
+})();
 
-  themeButtons.forEach(button => {
+document.addEventListener('DOMContentLoaded', () => {
+  const currentTheme = [...document.documentElement.classList]
+    .find((cn) => cn.startsWith('theme-'))
+    ?.replace('theme-', '');
+  const themeButtons = [
+    ...document.querySelectorAll('.header__theme-menu-button'),
+  ];
+  setActiveButton(themeButtons, currentTheme);
+
+  themeButtons.forEach((button) => {
     button.addEventListener('click', () => {
-      let theme = 'auto';
-      if (button.classList.contains('header__theme-menu-button_type_light')) {
-        theme = 'light';
-      } else if (button.classList.contains('header__theme-menu-button_type_dark')) {
-        theme = 'dark';
-      }
-      setTheme(theme);
+      const chosenTheme = [...button.classList]
+        .find((cn) => cn.includes('_type_'))
+        .split('_type_')[1];
+      setTheme(chosenTheme);
+      setActiveButton(themeButtons, chosenTheme);
     });
   });
+});
 
-  // Устанавливаем начальную тему (auto)
-  setTheme('auto');
-})();
+function setTheme(theme) {
+  document.documentElement.className = '';
+  document.documentElement.classList.add(`theme-${theme}`);
+  localStorage.setItem('theme', theme);
+}
+
+function setActiveButton(buttonsArray, theme) {
+  buttonsArray.forEach((button) => {
+    button.classList.remove('header__theme-menu-button_active');
+    button.removeAttribute('disabled');
+  });
+  const target = buttonsArray.find((button) =>
+    button.classList.contains(`header__theme-menu-button_type_${theme}`)
+  );
+  if (target) {
+    target.classList.add('header__theme-menu-button_active');
+    target.setAttribute('disabled', true);
+  } else {
+    const autoButton = document.querySelector(
+      '.header__theme-menu-button_type_auto'
+    );
+    autoButton.classList.add('header__theme-menu-button_active');
+    autoButton.setAttribute('disabled', true);
+  }
+}
