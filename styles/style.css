@@ -10,21 +10,27 @@
 }
 
 .decorated-zone {
-  position: absolute;
-  width: 25px;
-  height: 25px;
+  position: relative;
 }
 
-.decorated-zone__top-right {
+.decorated-zone::before {
+  content: '';
+  position: absolute;
   top: var(--padding-mobile);
   right: var(--padding-mobile);
+  width: 25px;
+  height: 25px;
   border-top: 1px solid var(--decor-color);
   border-right: 1px solid var(--decor-color);
 }
 
-.decorated-zone__bottom-left {
+.decorated-zone::after {
+  content: '';
+  position: absolute;
   bottom: var(--padding-mobile);
   left: var(--padding-mobile);
+  width: 25px;
+  height: 25px;
   border-bottom: 1px solid var(--decor-color);
   border-left: 1px solid var(--decor-color);
 }
@@ -39,7 +45,6 @@
   margin-bottom: 40px;
 }
 
-/* Меню переключения тем */
 .header__theme-menu {
   justify-self: end;
   align-self: start;
@@ -52,11 +57,15 @@
 }
 
 .header__theme-menu-button {
+  color: var(--text-color);
   padding: 2px 12px;
   font-size: 18px;
   line-height: 1;
   text-transform: lowercase;
   transition: all 0.3s ease;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
 }
 
 .header__theme-menu-button_active {
@@ -65,7 +74,11 @@
 }
 
 .header__theme-menu-button:hover {
-  border: 1px solid var(--text-color);
+  border: 1px solid var(--hover-color);
+}
+
+.header__theme-menu-button:focus {
+  outline: none;
 }
 
 .header__theme-menu-button:focus-visible {
@@ -73,11 +86,6 @@
   outline: none;
 }
 
-.header__theme-menu-button:focus {
-  outline: none;
-}
-
-/* Декоративный элемент REC */
 .header__rec {
   position: absolute;
   top: var(--padding-mobile);
@@ -100,7 +108,6 @@
   box-shadow: 0 0 4px 2px var(--accent-color);
 }
 
-/* Заголовок шапки */
 .header__title {
   font-size: clamp(7.25rem, 7.0115rem + 1.0178vw, 7.5rem);
   font-weight: 700;
@@ -110,12 +117,13 @@
   align-self: center;
 }
 
-/* Подзаголовок шапки */
+
 .header__subtitle {
   font-weight: 700;
   font-size: 18px;
   line-height: 1.3;
-  align-self: end;
+  align-self: center;
+  justify-self: end;
   max-width: 355px;
 }
 
@@ -126,7 +134,6 @@
   padding-bottom: 40px;
 }
 
-/* Секции */
 .section {
   display: grid;
   grid-template-columns: 1fr;
@@ -149,7 +156,7 @@
   gap: 20px;
 }
 
-/* Карточки */
+
 .card {
   display: flex;
   flex-direction: column;
@@ -174,6 +181,10 @@
   text-shadow: 2px 2px 0 var(--accent-color);
 }
 
+.card__text a:focus {
+  outline: none;
+}
+
 .card__text a:hover {
   border-bottom: 1px solid var(--text-color);
 }
@@ -181,10 +192,6 @@
 .card__text a:focus-visible {
   outline: 1px solid var(--text-color);
   outline-offset: 2px;
-}
-
-.card__text a:focus {
-  outline: none;
 }
 
 .gallery {
@@ -206,7 +213,7 @@
 
 .gallery__image {
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -257,12 +264,12 @@
     max-width: 364px;
   }
 
-  .decorated-zone__top-right {
+  .decorated-zone::before {
     top: var(--padding-tablet);
     right: var(--padding-tablet);
   }
 
-  .decorated-zone__bottom-left {
+  .decorated-zone::after {
     bottom: var(--padding-tablet);
     left: var(--padding-tablet);
   }
@@ -285,36 +292,45 @@
     max-width: 236px;
   }
 
-  .section__what .section__content {
+  .section-why .section__content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .section-causes .section__content {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
   }
 
-  .section__what .card:last-child {
+  .section-causes .card:last-child {
     grid-column: 1 / 3;
   }
 
-  .section__how .section__content {
+  .section-advices .section__content {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
   }
 
-  .card__full-width {
+  .advices-list {
+    display: contents;
+  }
+
+  .card--full-width {
     grid-column: 1 / 3;
   }
 
   .gallery__grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto auto auto;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, auto);
     gap: 20px;
   }
 
   .gallery__image--sunset {
     grid-column: span 2;
-    grid-row: 1 / 2;
   }
 
   .gallery__image--ice-cream {
@@ -365,19 +381,23 @@
     max-width: 491px;
   }
 
-  .section__what .section__content {
+  .section {
+    grid-template-columns: 1fr 2.06fr;
+  }
+
+  .section-causes .section__content {
     grid-template-columns: 1fr 1fr 1fr;
   }
 
-  .section__what .card:last-child {
+  .section-causes .card:last-child {
     grid-column: auto;
   }
 
-  .section__how .section__content {
+  .section-advices .section__content {
     grid-template-columns: 1fr 1fr 1fr;
   }
 
-  .card__full-width {
+  .card--full-width {
     grid-column: auto;
   }
 
