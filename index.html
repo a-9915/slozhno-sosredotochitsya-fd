@@ -18,6 +18,21 @@
     <link rel="stylesheet" href="./styles/light.css" />
     
     <script src="./scripts/script.js" defer></script>
+
+    <style>
+      /* Стили для секции "Что снижает концентрацию внимания?" */
+      @media (min-width: 768px) {
+        .section-causes .section__content {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+        }
+        
+        .section-causes .section__content .card {
+          margin-bottom: 0;
+        }
+      }
+    </style>
   </head>
   <body class="page">
     <!-- ШАПКА -->
@@ -84,7 +99,7 @@
       <!-- Секция 2: Что снижает концентрацию внимания -->
       <section class="section section-causes">
         <h2 class="section__title">Что снижает концентрацию внимания?</h2>
-        <div class="section__content section__content--grid">
+        <div class="section__content">
           <article class="card">
             <h3 class="card__title title-decor">Концентрация</h3>
             <p class="card__text">
